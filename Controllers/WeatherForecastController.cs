@@ -23,17 +23,24 @@ namespace rtk_query_codegen_nullable.Controllers
             _logger = logger;
         }
 
+        [HttpPost]
+        public WeatherControlResponse Update([FromBody] WeatherControlRequest req)
+        {
+            return new WeatherControlResponse(req.Date, req.TemperatureC, req.Summary, req.Reason);
+        }
+
         [HttpGet]
         public IEnumerable<WeatherForecast> Get()
         {
             var rng = new Random();
-            return Enumerable.Range(1, 5).Select(index => new WeatherForecast
-            {
-                Date = DateTime.Now.AddDays(index),
-                TemperatureC = rng.Next(-20, 55),
-                Summary = Summaries[rng.Next(Summaries.Length)]
-            })
-            .ToArray();
+            return Enumerable.Range(1, 5).Select(index =>
+                    new WeatherForecast(
+                        DateTime.Now.AddDays(index),
+                        rng.Next(-20, 55),
+                        Summaries[rng.Next(Summaries.Length)]
+                    )
+                )
+                .ToArray();
         }
     }
 }
