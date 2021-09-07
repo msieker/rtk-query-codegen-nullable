@@ -1,16 +1,8 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using Microsoft.OpenApi.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace rtk_query_codegen_nullable
 {
@@ -28,9 +20,10 @@ namespace rtk_query_codegen_nullable
         {
 
             services.AddControllers();
-            services.AddSwaggerGen(c =>
+            services.AddOpenApiDocument(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "rtk_query_codegen_nullable", Version = "v1" });
+                c.Title = "rtk_query_codegen_nullable";
+                c.Version = "v1";
             });
         }
 
@@ -40,15 +33,11 @@ namespace rtk_query_codegen_nullable
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "rtk_query_codegen_nullable v1"));
+                
             }
-
-            app.UseHttpsRedirection();
-
+            app.UseOpenApi();
+            app.UseSwaggerUi3();
             app.UseRouting();
-
-            app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
